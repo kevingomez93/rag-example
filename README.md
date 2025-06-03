@@ -24,9 +24,6 @@ A complete Retrieval-Augmented Generation (RAG) chat system using Python and Mil
 ### Step 1: Clone and Setup Environment
 
 ```bash
-# Navigate to your project directory
-cd new-rag
-
 # Create virtual environment (REQUIRED - don't skip this!)
 python3 -m venv venv
 
