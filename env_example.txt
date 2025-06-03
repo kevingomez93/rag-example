@@ -1,0 +1,4 @@
+OPENAI_API_KEY=your_openai_api_key_here
+MILVUS_HOST=localhost
+MILVUS_PORT=19530
+COLLECTION_NAME=rag_documents 
