@@ -1,310 +1,285 @@
 # 🤖 RAG Chat with Milvus - Simple POC
 
-A complete Retrieval-Augmented Generation (RAG) chat system using Python and Milvus vector database.
+A complete Retrieval-Augmented Generation (RAG) chat system using Python and the Milvus vector database.
+
+---
 
 ## 🌟 Features
 
-- **Vector-based document retrieval** using Milvus database
-- **Semantic search** with sentence transformers
-- **LLM integration** with OpenAI GPT models
-- **Web interface** built with Streamlit
-- **Command-line interface** for testing
-- **PDF document processing** support
-- **Text chunking** with overlap for better context
-- **Source attribution** for generated responses
+* **Vector-based document retrieval** with Milvus
+* **Semantic search** using sentence transformers
+* **LLM integration** with OpenAI GPT models
+* **Streamlit** web interface
+* **Command-line interface** for testing
+* **PDF document support**
+* **Text chunking** with overlap for better context
+* **Source attribution** for responses
 
-## 🚀 Quick Start Guide
+---
+
+## 🚀 Quick Start Guide (macOS with Colima)
 
 ### Prerequisites
 
-- **Python 3.8+** (tested with Python 3.13)
-- **OpenAI API key** ([Get one here](https://platform.openai.com/account/api-keys))
-- **Docker** (optional - for full Milvus setup)
+* Python 3.8+ (tested with Python 3.13)
+* OpenAI API key ([get one here](https://platform.openai.com/account/api-keys))
+* Colima with Docker (recommended on macOS)
 
-### Step 1: Clone and Setup Environment
+---
+
+### 1️⃣ Install Colima (only once)
 
 ```bash
-# Create virtual environment (REQUIRED - don't skip this!)
+brew install colima
+```
+
+### 2️⃣ Start Colima
+
+```bash
+colima start
+```
+
+(You **do not** need `--with-docker`; Docker is default in Colima.)
+
+---
+
+### 3️⃣ Clone and Setup Environment
+
+```bash
+git clone https://github.com/kevingomez93/rag-example.git
+cd rag-example
 python3 -m venv venv
-
-# Activate virtual environment
 source venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
-### Step 2: Configure API Key
+---
+
+### 4️⃣ Configure API Key
 
 ```bash
-# Set your OpenAI API key (replace with your actual key)
-export OPENAI_API_KEY="your-openai-api-key-here"
+export OPENAI_API_KEY="your-openai-key-here"
 ```
 
-**💡 Tip:** Add this to your `~/.zshrc` or `~/.bashrc` to make it permanent:
+👉 **Tip:** Add this permanently to your shell profile:
+
 ```bash
-echo 'export OPENAI_API_KEY="your-key-here"' >> ~/.zshrc
+echo 'export OPENAI_API_KEY="your-openai-key-here"' >> ~/.zshrc
+source ~/.zshrc
 ```
 
-### Step 3: Choose Your Setup
+---
 
-You can run this system in two ways:
-
-#### Option A: Embedded Milvus (Recommended for Testing)
-Uses Milvus Lite - no Docker required!
-
-#### Option B: Full Milvus with Docker
-For production-like setup with persistent storage.
+### 5️⃣ Start Milvus with Docker (inside Colima)
 
 ```bash
-# Start Milvus containers
 docker-compose up -d
+```
 
-# Check if containers are running
+Check the containers:
+
+```bash
 docker ps
 ```
+
+---
 
 ## 🖥️ Running the Application
 
 ### Web Interface (Streamlit)
 
 ```bash
-# Make sure virtual environment is activated
 source venv/bin/activate
-
-# Set API key
-export OPENAI_API_KEY="your-openai-api-key-here"
-
-# Run Streamlit app
+export OPENAI_API_KEY="your-openai-key-here"
 streamlit run streamlit_app.py
 ```
 
-**Open your browser to:** `http://localhost:8501`
+**Open your browser at:** [http://localhost:8501](http://localhost:8501)
 
-#### Using the Web Interface:
-1. **Initialize**: The app will auto-detect your API key and connect to Milvus
-2. **Add Documents**: Click "Add Sample Documents" or upload your own
-3. **Chat**: Start asking questions about your documents!
+#### Using the Streamlit Web UI:
+
+1. Click **Add Sample Documents** or upload your own
+2. Start asking questions about your documents!
+
+---
 
 ### Command Line Interface
 
 ```bash
-# Make sure virtual environment is activated
 source venv/bin/activate
-
-# Set API key
-export OPENAI_API_KEY="your-openai-api-key-here"
-
-# Run CLI
+export OPENAI_API_KEY="your-openai-key-here"
 python simple_cli.py
 ```
 
 #### CLI Commands:
-- Type questions to chat with your documents
-- Type `stats` to see knowledge base statistics
-- Type `quit` or `exit` to end the session
+
+* Type questions to chat with your documents
+* Type `stats` to see knowledge base statistics
+* Type `quit` or `exit` to end the session
+
+---
 
 ## 📊 Example Usage
 
-### Sample Questions to Try:
-- `"What is RAG?"`
-- `"How do vector databases work?"`
-- `"Explain machine learning"`
-- `"What is artificial intelligence?"`
-
-### Expected Output:
-```
+```plaintext
 🧑 You: What is RAG?
 
-🤖 Assistant: Retrieval-Augmented Generation (RAG) is a technique that combines information retrieval with text generation. It works by first retrieving relevant documents from a knowledge base using semantic search, then using those documents as context for a language model to generate accurate and informed responses.
+🤖 Assistant: Retrieval-Augmented Generation (RAG) combines document retrieval with generative models to produce informed answers, by retrieving relevant text from a knowledge base and feeding it into an LLM.
 
-📚 Sources (1 documents):
+📚 Sources:
    1. RAG Explanation (score: 0.433)
 ```
 
-## 🛠️ Managing Milvus Containers
+---
 
-### Start Milvus:
-```bash
-docker-compose up -d
-```
+## 🛠️ Managing Milvus (with Colima/Docker)
 
-### Stop Milvus:
-```bash
-docker-compose down
-```
+* **Start:**
 
-### Stop and Remove All Data:
-```bash
-docker-compose down -v
-```
+  ```bash
+  docker-compose up -d
+  ```
+* **Stop:**
 
-### Check Status:
-```bash
-docker ps
-```
+  ```bash
+  docker-compose down
+  ```
+* **Stop and remove volumes:**
+
+  ```bash
+  docker-compose down -v
+  ```
+* **Check status:**
+
+  ```bash
+  docker ps
+  ```
+
+---
 
 ## 🐛 Troubleshooting
 
-### Common Issues and Solutions:
+| Problem                                 | Solution                                                 |
+| --------------------------------------- | -------------------------------------------------------- |
+| `command not found: streamlit`          | Check venv is activated, reinstall requirements          |
+| `OpenAI API key error`                  | Ensure `OPENAI_API_KEY` is exported                      |
+| `Failed to connect to Milvus`           | Make sure Colima is running and Docker containers are up |
+| `huggingface/tokenizers` warnings       | Set `export TOKENIZERS_PARALLELISM=false`                |
+| `externally-managed-environment` errors | Always use a Python venv                                 |
 
-#### 1. "command not found: streamlit"
-**Solution:** Make sure virtual environment is activated:
-```bash
-source venv/bin/activate
-pip install -r requirements.txt
-```
+**Debug steps:**
 
-#### 2. "OpenAI API key error"
-**Solution:** Check your API key is set correctly:
-```bash
-echo $OPENAI_API_KEY
-export OPENAI_API_KEY="your-actual-key-here"
-```
+* Confirm: `which python` shows your `venv/bin/python`
+* Check Milvus logs: `docker-compose logs`
+* Confirm API key: `echo $OPENAI_API_KEY`
+* Check installed dependencies:
 
-#### 3. "Failed to connect to Milvus"
-**Solutions:**
-- **For Embedded Mode:** Should work automatically
-- **For Docker Mode:** Check containers are running:
   ```bash
-  docker-compose ps
-  docker-compose up -d
+  pip list | grep -E "(streamlit|pymilvus|openai)"
   ```
 
-#### 4. "externally-managed-environment" Error
-**Solution:** Always use virtual environment:
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-#### 5. Torch/Tokenizer Warnings
-These warnings are harmless and don't affect functionality. To suppress them:
-```bash
-export TOKENIZERS_PARALLELISM=false
-```
+---
 
 ## 📁 Project Structure
 
 ```
-new-rag/
-├── milvus_client.py     # Vector database operations
-├── rag_engine.py        # Core RAG functionality  
-├── streamlit_app.py     # Web interface
-├── simple_cli.py        # Command line interface
-├── requirements.txt     # Python dependencies
-├── docker-compose.yml   # Milvus Docker setup
-├── env_example.txt      # Environment template
-└── README.md           # This file
+rag-example/
+├── milvus_client.py
+├── rag_engine.py
+├── streamlit_app.py
+├── simple_cli.py
+├── requirements.txt
+├── docker-compose.yml
+├── env_example.txt
+└── README.md
 ```
+
+---
 
 ## ⚙️ Configuration
 
-### Environment Variables
+| Variable          | Description            | Default        | Required |
+| ----------------- | ---------------------- | -------------- | -------- |
+| `OPENAI_API_KEY`  | Your OpenAI API key    | None           | ✅ Yes    |
+| `MILVUS_HOST`     | Milvus server host     | localhost      | No       |
+| `MILVUS_PORT`     | Milvus port            | 19530          | No       |
+| `COLLECTION_NAME` | Milvus collection name | rag\_documents | No       |
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `OPENAI_API_KEY` | Your OpenAI API key | None | ✅ Yes |
-| `MILVUS_HOST` | Milvus server hostname | localhost | No |
-| `MILVUS_PORT` | Milvus server port | 19530 | No |
-| `COLLECTION_NAME` | Milvus collection name | rag_documents | No |
+**Embedding Model**: `all-MiniLM-L6-v2` (384 dims)
+**LLM**: `gpt-3.5-turbo` (or `gpt-4`)
+**Similarity**: Cosine
+**Index type**: IVF\_FLAT
 
-### Model Configuration
-
-- **Embedding Model**: `all-MiniLM-L6-v2` (384 dimensions)
-- **LLM Model**: `gpt-3.5-turbo` (configurable to `gpt-4`)
-- **Similarity Metric**: Cosine similarity
-- **Index Type**: IVF_FLAT
+---
 
 ## 🔧 Advanced Usage
 
-### Adding Your Own Documents
+### Add Your Own Documents (via code)
 
-#### Via Web Interface:
-1. Go to "Add Documents" tab
-2. Either paste text or upload PDF files
-3. Documents are automatically chunked and indexed
-
-#### Via Python Code:
 ```python
 from rag_engine import RAGEngine
 
-# Initialize
 rag = RAGEngine()
 
-# Add documents
-documents = ["Your document text here...", "Another document..."]
+docs = ["your document text", "another document"]
 sources = ["Doc 1", "Doc 2"]
-rag.add_documents(documents, sources)
+rag.add_documents(docs, sources)
 
-# Chat
-result = rag.chat("Your question here")
+result = rag.chat("Your question")
 print(result["response"])
 ```
 
-### Customizing Models
-
-#### Use GPT-4:
-```python
-result = rag.chat("Your question", model="gpt-4")
-```
-
-#### Use Different Embedding Model:
-Edit `milvus_client.py`:
-```python
-self.encoder = SentenceTransformer('all-mpnet-base-v2')
-self.dimension = 768  # Update accordingly
-```
+---
 
 ## 🚦 Production Considerations
 
-For production deployment:
+✅ Use external Milvus cluster
+✅ Add proper rate-limiting and authentication
+✅ Add logging and monitoring
+✅ Cache embeddings for speed
+✅ Validate user inputs
 
-1. **Use external Milvus cluster** for scalability
-2. **Implement authentication** and rate limiting
-3. **Add proper logging** and monitoring
-4. **Use environment variables** for all configuration
-5. **Implement caching** for embeddings
-6. **Add input validation** and sanitization
+---
 
 ## 🆘 Getting Help
 
-### Debug Steps:
-1. **Check virtual environment:** `which python` should show path in `venv/`
-2. **Check API key:** `echo $OPENAI_API_KEY`
-3. **Check Milvus:** `docker ps` or check logs with `docker-compose logs`
-4. **Check dependencies:** `pip list | grep -E "(streamlit|pymilvus|openai)"`
+* Check the console logs
+* Validate your environment variables
+* Confirm Milvus is running
+* Make sure your OpenAI key has credits
+* Use:
 
-### Still Having Issues?
-- Check the console output for specific error messages
-- Ensure all dependencies are properly installed
-- Verify your OpenAI API key has sufficient credits
-- Make sure no firewall is blocking connections
+  ```bash
+  docker-compose logs
+  ```
 
-## 📞 Quick Command Reference
+  for deeper debugging.
+
+---
+
+## 📞 Quick Commands
 
 ```bash
-# Setup (one time)
+# First-time setup
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 
-# Every time you use it
+# Every time you work
 source venv/bin/activate
 export OPENAI_API_KEY="your-key"
 
-# Run web interface
+# Start Milvus with Colima
+colima start
+docker-compose up -d
+
+# Run web
 streamlit run streamlit_app.py
 
 # Run CLI
 python simple_cli.py
 
-# Manage Docker (optional)
-docker-compose up -d    # Start
-docker-compose down     # Stop
-docker ps              # Check status
+# Tear down
+docker-compose down -v
+colima stop
 ```
-
----
-
-🎉 **You're ready to go!** Start with the CLI for quick testing, then try the web interface for a full experience. 
