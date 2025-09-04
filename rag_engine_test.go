@@ -1,4 +1,4 @@
-package rag
+package main
 
 import (
 	"strings"
@@ -48,7 +48,7 @@ func TestGenerateResponseUsesContext(t *testing.T) {
 	oa := &dummyOpenAI{}
 	mv := &dummyMilvus{}
 	engine := NewRAGEngine(oa, mv)
-	ctx := []Document{{Text: "info about cats", Source: "src"}}
+	ctx := []Document{{Text: "info about cats", Source: "src", Similarity: 0.85}}
 	resp, err := engine.GenerateResponse("question?", ctx, "gpt-test")
 	if err != nil {
 		t.Fatalf("GenerateResponse returned error: %v", err)
